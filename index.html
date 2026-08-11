@@ -23,7 +23,8 @@ a:hover{color:#FFD400}
 @keyframes uploFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
 @keyframes uploSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 model-viewer{--poster-color:transparent}
-.uplo-splitchars{display:inline-block;overflow:hidden}
+.uplo-splitchars{overflow:hidden}
+.uplo-splitchars .sf-word{display:inline-block;overflow:hidden;white-space:nowrap}
 .uplo-splitchars .sf-char{display:inline-block}
 @media (prefers-reduced-motion: reduce){*:not([data-marquee]){animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important}}
 </style>
@@ -388,12 +389,20 @@ model-viewer{--poster-color:transparent}
     }
     internal = true;
     el.innerHTML = '';
-    const chars = text.split('').map(ch => {
-      const span = document.createElement('span');
-      span.className = 'sf-char';
-      span.textContent = ch === ' ' ? ' ' : ch;
-      el.appendChild(span);
-      return span;
+    const chars = [];
+    const words = text.split(' ');
+    words.forEach((word, wi) => {
+      const wordSpan = document.createElement('span');
+      wordSpan.className = 'sf-word';
+      word.split('').forEach(ch => {
+        const span = document.createElement('span');
+        span.className = 'sf-char';
+        span.textContent = ch;
+        wordSpan.appendChild(span);
+        chars.push(span);
+      });
+      el.appendChild(wordSpan);
+      if (wi < words.length - 1) el.appendChild(document.createTextNode(' '));
     });
     internal = false;
     window.gsap.fromTo(chars, {
