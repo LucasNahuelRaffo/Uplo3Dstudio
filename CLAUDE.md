@@ -13,6 +13,7 @@ A single-page homepage for **Uplo3D Studio** (impresión 3D — sets de puntas, 
 - `assets/logos/`, `assets/brands/` — brand logos used in the "Marcas que confían" marquee section.
 - `uploads/` — page images and 3D models (`.glb`) rendered via `<model-viewer>` (Google's web component, loaded from unpkg in the HTML `<head>`).
 - `.thumbnail` — preview thumbnail for the design, not page content.
+- `index.html` — a copy of `Uplo3D Studio.dc.html` used as the GitHub Pages entry point. **Keep it in sync** (`cp "Uplo3D Studio.dc.html" index.html`) after every edit to the source file — GitHub Pages serves `index.html`, not the `.dc.html` file.
 
 ## Page structure (in `Uplo3D Studio.dc.html`)
 
@@ -22,6 +23,7 @@ Sections are marked with `data-screen-label` and appear in this order: Hero → 
 - Scroll-reveal / entrance animations are driven by `data-reveal` attributes and CSS transitions defined in the inline `<style>` block inside `<helmet>` (e.g. `@keyframes uploMarquee`, `uploFloat`, `uploSpin`), respected by a `prefers-reduced-motion` override.
 - The header nav uses `onClick="{{ handlerName }}"` bindings resolved by the script inside `<script data-dc-script>` (not by `support.js` itself — `support.js` only provides the parsing/mounting runtime).
 - 3D models (`mate.glb`, `set-puntas.glb`, `set-puntas-animado.glb`, `tapa-rueda.glb`) are shown via `<model-viewer>` tags pointing at files in `uploads/`.
+- **GSAP + ScrollTrigger** are loaded via CDN (`jsdelivr`) in `<head>`, before `support.js`. Title elements get a scroll-driven "float up by character" reveal: mark any title text with `class="uplo-splitchars"` and it's picked up automatically by `window.__uploInitScrollFloat()` (defined at the top of the `<script data-dc-script>` block, called from `componentDidMount`). Because the `x-dc`/React runtime can re-render text (e.g. on language toggle via `setEs`/`setEn`), a `MutationObserver` re-splits and re-animates any `.uplo-splitchars` element whenever its text content changes — don't remove that observer when touching this logic, or language switches will silently break the animation.
 
 ## Working in this repo
 
