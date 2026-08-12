@@ -69,6 +69,20 @@ model-viewer::part(default-progress-bar){display:none}
 .specular-button.glass-dark:hover{background:rgba(255,255,255,0.1)}
 .specular-button.glass-light{background:rgba(14,14,14,0.04);border:1px solid transparent;color:#0E0E0E;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,0.4),0 8px 20px rgba(0,0,0,0.08)}
 .specular-button.glass-light:hover{background:rgba(14,14,14,0.08)}
+/* Hero-only variant: the CTA sits on the light hero but needed a darker, more distinct
+   look than the shared .glass-light used by Servicios/Proyectos/Contacto — kept as its
+   own class instead of touching that shared one. */
+.specular-button.glass-hero{background:#B0B0B0;border:1px solid rgba(245,197,24,0.45);color:#FFFFFF;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+.specular-button.glass-hero:hover{background:#BEBEBE;border-color:#F5C518}
+/* Services-only variant: the "Ver todo" CTA, kept separate from the shared .glass-light so
+   Proyectos/Contacto aren't affected. */
+.specular-button.glass-serv{background:#B0B0B0;border:1px solid rgba(245,197,24,0.45);color:#0E0E0E;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,0.12)}
+.specular-button.glass-serv:hover{background:#BEBEBE;border-color:#F5C518}
+/* Same wave texture as the footer/contact background, colours inverted for light sections.
+   z-index:-1 sinks it behind the section's own in-flow content without needing to touch any
+   sibling — negative-z children paint before normal content regardless of the sibling's own
+   position, so this only requires the section itself to be position:relative. */
+.u-wave-bg{position:absolute;inset:0;background:repeating-radial-gradient(ellipse 1700px 900px at 18% 12%,#E2E2E2 0px,#FFFFFF 190px,#ECECEC 380px);opacity:0.9;filter:blur(3px);pointer-events:none}
 .specular-button::before{content:'';position:absolute;inset:-2px;border-radius:inherit;padding:2px;background:conic-gradient(from var(--uplo-angle),transparent 0%,#FFD400 12%,transparent 28%,transparent 72%,#FFD400 88%,transparent 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0.55;transition:opacity 250ms;animation:uplo-border-spin 3.5s linear infinite;pointer-events:none;z-index:-1}
 .specular-button:hover::before{opacity:1}
 @keyframes uplo-border-spin{to{--uplo-angle:360deg}}
@@ -140,7 +154,7 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
 #hero{min-height:auto !important}
 #hero>div{min-height:auto !important}
 .u-hero-grid{grid-template-columns:1fr !important;padding:88px 20px 40px !important;gap:20px !important}
-.u-hero-stage{min-height:320px !important}
+.u-hero-stage{min-height:320px !important;margin:0 !important;z-index:0 !important}
 .u-hero-side{align-items:flex-start !important;gap:20px !important;padding:8px 0 0 !important}
 .u-hero-stats{text-align:left !important;align-items:flex-start !important;padding-top:0 !important;margin-top:0 !important;margin-bottom:0 !important}
 /* Marcas */
@@ -266,7 +280,7 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
 
 <section id="hero" data-screen-label="Hero" style="min-height:100vh;display:flex;background:#FFFFFF;position:relative">
   <div style="position:relative;width:100%;background:#F7F7F7;display:flex;flex-direction:column;justify-content:space-between;min-height:100vh">
-    <div data-hr="0" class="u-hero-topbar" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:26px clamp(24px,4vw,64px) 8px">
+    <div data-hr="0" class="u-hero-topbar" style="position:relative;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:26px clamp(24px,4vw,64px) 8px">
       <img src="uploads/LOGO fondo claro.png" alt="uplo3D studio" style="height:64px;width:auto">
       <nav class="pill-nav-items compact" aria-label="Primary">
         <ul class="pill-list" role="menubar">
@@ -290,25 +304,26 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
         </div>
       </div>
     </div>
-    <div class="u-hero-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;padding:16px clamp(24px,4vw,64px) 48px 24px;align-items:stretch;flex:1;max-width:1480px;width:100%;margin:0 auto;box-sizing:border-box">
+    <div class="u-hero-grid" style="position:relative;display:grid;grid-template-columns:1fr 1.35fr 1fr;gap:16px;padding:16px clamp(24px,4vw,64px) 48px 24px;align-items:stretch;flex:1;max-width:1480px;width:100%;margin:0 auto;box-sizing:border-box">
       <div style="display:flex;flex-direction:column;justify-content:center;gap:20px;padding:24px 0">
         <div data-hr="1" style="display:flex;gap:8px">
           <button onClick="{{ heroPrev }}" aria-label="prev" style="width:42px;height:42px;border-radius:999px;border:1px solid rgba(0,0,0,0.18);background:transparent;color:#0E0E0E;cursor:pointer;font-size:14px;transition:all 200ms" style-hover="border-color:#F5C518;color:#F5C518">‹</button>
           <button onClick="{{ heroNext }}" aria-label="next" style="width:42px;height:42px;border-radius:999px;border:1px solid rgba(0,0,0,0.18);background:transparent;color:#0E0E0E;cursor:pointer;font-size:14px;transition:all 200ms" style-hover="border-color:#F5C518;color:#F5C518">›</button>
         </div>
-        <h1 data-hr="2" style="margin:0;font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-0.01em;line-height:0.98;font-size:clamp(46px,5.8vw,88px)">
+        <div data-hr="2"><h1 style="margin:0;font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-0.01em;line-height:0.98;font-size:clamp(46px,5.8vw,88px);filter:blur(0.6px);opacity:0.75;transform:scale(0.96);transform-origin:left center">
           <span class="uplo-splitchars" style="color:#0E0E0E">IMAGINE</span><br>
           <span class="uplo-splitchars" style="color:#9A9A9A">TO CREATE</span>
-        </h1>
-        <p data-hr="3" style="margin:0;max-width:420px;color:#5A5A5A;font-size:17px;line-height:1.65">{{ t.heroSub }}</p>
-        <a data-hr="4" href="{{ waUrl }}" target="_blank" class="specular-button glass-light" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:16px;padding:17px 34px;border-radius:999px"><span class="specular-button__label">{{ t.cta1 }}</span></a>
+        </h1></div>
+        <div data-hr="3"><p style="margin:0;max-width:420px;color:#5A5A5A;font-size:17px;line-height:1.65;filter:blur(0.5px);opacity:0.75">{{ t.heroSub }}</p></div>
+        <a data-hr="4" href="{{ waUrl }}" target="_blank" class="specular-button glass-hero" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:16px;padding:17px 34px;border-radius:999px"><span class="specular-button__label">{{ t.cta1 }}</span></a>
         <div data-hr="5" style="display:flex;gap:20px;margin-top:24px;color:#5A5A5A">
           <a href="https://instagram.com/uplo3design" target="_blank" aria-label="Instagram" class="uplo-social"><span class="hover-circle" aria-hidden="true"></span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle></svg></a>
           <a href="{{ waUrl }}" target="_blank" aria-label="WhatsApp" class="uplo-social"><span class="hover-circle" aria-hidden="true"></span><svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5.1-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.4-2.9c-.3-.4 0-.5.2-.7l.5-.6c.1-.2.1-.4 0-.5l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1.1 2.7c.1.2 1.9 2.9 4.5 4 .6.3 1.1.4 1.5.6.6.2 1.2.2 1.6.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.5-.3z"></path></svg></a>
           <a href="mailto:uplo3design@gmail.com" aria-label="Email" class="uplo-social"><span class="hover-circle" aria-hidden="true"></span><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></a>
         </div>
       </div>
-      <div data-hr="3" class="u-hero-stage" style="position:relative;min-height:520px">
+      <div data-hr="3" class="u-hero-stage" style="position:relative;z-index:2;min-height:600px;margin:0 -70px">
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:680px;height:680px;max-width:96%;border-radius:999px;background:radial-gradient(circle,rgba(0,0,0,0.10),transparent 62%);pointer-events:none"></div>
         <sc-for list="{{ pieces }}" as="p" hint-placeholder-count="1">
           <div style="{{ p.wrapStyle }}">
             <sc-if value="{{ p.isModel }}" hint-placeholder-val="{{ false }}">
@@ -327,8 +342,8 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
         </sc-for>
       </div>
       <div data-hr="5" class="u-hero-side" style="display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;padding:24px 0;gap:32px">
-        <div class="u-hero-stats" style="text-align:right;display:flex;flex-direction:column;gap:14px;align-items:flex-end;justify-content:center;margin-top:auto;margin-bottom:auto;padding-top:96px">
-          <div style="font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;font-size:34px;color:#0E0E0E;line-height:1">100%</div>
+        <div class="u-hero-stats" style="text-align:right;display:flex;flex-direction:column;gap:14px;align-items:flex-end;justify-content:center;margin-top:auto;margin-bottom:auto;padding-top:96px;filter:blur(0.6px);opacity:0.75;transform:scale(0.94);transform-origin:right center">
+          <div class="u-count" data-count-to="100" data-count-suffix="%" style="font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;font-size:34px;color:#0E0E0E;line-height:1;font-variant-numeric:tabular-nums">100%</div>
           <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.15em;color:#9A9A9A;text-transform:uppercase">A MEDIDA</div>
           <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.15em;color:#5A5A5A;text-transform:uppercase;margin-top:18px">{{ t.chipsLabel }}</div>
           <div style="display:flex;gap:10px">
@@ -358,7 +373,8 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
   </div>
 </div>
 
-<section data-screen-label="Marcas" data-reveal="0" style="background:#F4F4F4;padding:88px 0 96px">
+<section data-screen-label="Marcas" style="background:#F4F4F4;padding:88px 0 96px;position:relative">
+  <div data-reveal="0" style="position:relative">
   <div style="text-align:center;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.15em;color:#3A3A3A;text-transform:uppercase;margin-bottom:56px">✳ {{ t.brandsTitle }}</div>
   <div style="overflow:hidden;position:relative">
     <div class="u-fade-l" style="position:absolute;left:0;top:0;bottom:0;width:120px;background:linear-gradient(90deg,#F4F4F4,transparent);z-index:2;pointer-events:none"></div>
@@ -368,6 +384,7 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
         <div role="img" aria-label="{{ lg.name }}" style="width:{{ lg.w }}px;height:{{ lg.h }}px;background-image:url('{{ lg.src }}');background-size:contain;background-repeat:no-repeat;background-position:center;mix-blend-mode:multiply;opacity:0.75;transition:all 250ms cubic-bezier(0.22,1,0.36,1)" style-hover="opacity:1"></div>
       </sc-for>
     </div>
+  </div>
   </div>
 </section>
 
@@ -413,11 +430,12 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
   </div>
 </section>
 
-<section id="services" data-screen-label="Preview Servicios" data-reveal="0" class="u-services" style="background:#F4F4F4;color:#0E0E0E;padding:110px 32px;margin-top:70px">
-  <div style="max-width:1200px;margin:0 auto">
+<section id="services" data-screen-label="Preview Servicios" class="u-services" style="background:#F4F4F4;color:#0E0E0E;padding:110px 56px;margin-top:70px;position:relative">
+  <div class="u-wave-bg"></div>
+  <div data-reveal="0" style="position:relative;max-width:1200px;margin:0 auto">
     <div style="text-align:center;font-family:'Space Mono',monospace;font-size:12px;letter-spacing:0.15em;color:#3A3A3A;text-transform:uppercase;margin-bottom:28px">{{ t.servKicker }}</div>
-    <h2 style="margin:0 0 64px;text-align:center;font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-0.01em;line-height:0.98;font-size:clamp(44px,6.4vw,92px)"><span class="uplo-splitchars" style="color:#0E0E0E">{{ t.servT1 }}</span><br><span class="uplo-splitchars" style="color:#9A9A9A">{{ t.servT2 }}</span></h2>
-    <div class="u-serv-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px;align-items:center;justify-items:center">
+    <h2 style="margin:0 0 28px;text-align:center;font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-0.01em;line-height:0.98;font-size:clamp(44px,6.4vw,92px)"><span class="uplo-splitchars" style="color:#0E0E0E">{{ t.servT1 }}</span><br><span class="uplo-splitchars" style="color:#9A9A9A">{{ t.servT2 }}</span></h2>
+    <div class="u-serv-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:130px;align-items:center;justify-items:center">
       <div class="u-serv-col" style="display:flex;flex-direction:column;gap:72px;max-width:250px;justify-self:start">
         <div class="u-serv-card u-s1" style="text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0E0E0E" stroke-width="1.8"><path d="M12 2l8 4.5v9L12 20l-8-4.5v-9z"></path><path d="M12 11L4 6.5M12 11l8-4.5M12 11v9"></path></svg>
@@ -445,7 +463,7 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
           </sc-for>
         </div>
         <div style="display:flex;justify-content:center;margin-top:8px">
-          <a href="{{ waUrl }}" target="_blank" class="specular-button glass-light" style="font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 20px;border-radius:999px"><span class="specular-button__label">{{ t.servSeeAll }} →</span></a>
+          <a href="{{ waUrl }}" target="_blank" class="specular-button glass-serv" style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:12px 52px;border-radius:999px"><span class="specular-button__label">{{ t.servSeeAll }} →</span></a>
         </div>
       </div>
       <div class="u-serv-col" style="display:flex;flex-direction:column;gap:72px;max-width:250px;justify-self:end">
@@ -465,7 +483,8 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
   </div>
 </section>
 
-<section id="projects" data-screen-label="Preview Proyectos" data-reveal="0" class="u-projects" style="background:#F4F4F4;color:#0E0E0E;padding:110px 0;margin-top:70px;position:relative;overflow:hidden">
+<section id="projects" data-screen-label="Preview Proyectos" class="u-projects" style="background:#F4F4F4;color:#0E0E0E;padding:110px 0;margin-top:70px;position:relative;overflow:hidden">
+  <div data-reveal="0" style="position:relative">
   <div class="u-proj-head" style="max-width:1360px;margin:0 auto;padding:0 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:64px">
     <div style="font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.15em;color:#0E0E0E;text-transform:uppercase">■ {{ t.projKicker }}</div>
     <button onClick="{{ goProjectsPage }}" style="background:none;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.15em;color:#0E0E0E;text-transform:uppercase" style-hover="color:#3A3A3A">{{ t.projLink }} ↳</button>
@@ -500,9 +519,12 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
     </div>
     <a href="{{ waUrl }}" target="_blank" class="specular-button glass-light" style="display:inline-block;margin-top:32px;font-family:'Space Mono',monospace;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;padding:15px 32px;border-radius:999px"><span class="specular-button__label">{{ t.projBtn }} ↳</span></a>
   </div>
+  </div>
 </section>
 
-<section data-screen-label="Galería" data-reveal="0" class="u-gal" style="background:#F4F4F4;color:#0E0E0E;padding:110px 0 120px;overflow:hidden">
+<section data-screen-label="Galería" class="u-gal" style="background:#F4F4F4;color:#0E0E0E;padding:110px 0 120px;overflow:hidden;position:relative">
+  <div class="u-wave-bg"></div>
+  <div data-reveal="0" style="position:relative">
   <h2 class="uplo-splitchars" style="margin:0 auto 20px;max-width:900px;padding:0 32px;text-align:center;font-family:Archivo,sans-serif;font-stretch:125%;font-weight:800;text-transform:uppercase;letter-spacing:-0.01em;font-size:clamp(26px,3.2vw,42px);line-height:1.1;color:#0E0E0E;text-wrap:pretty">{{ t.galTitle }}</h2>
   <p style="margin:0 auto 72px;max-width:520px;padding:0 32px;text-align:center;font-size:14px;color:#5A5A5A">{{ t.galSub1 }} <strong style="color:#0E0E0E">Uplo3D Studio</strong>{{ t.galSub2 }}</p>
   <div class="u-gal-row" style="display:flex;justify-content:center;align-items:center;gap:26px">
@@ -521,6 +543,7 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
       <div style="width:185px;height:230px;background:linear-gradient(160deg,#E2E2E2,#C6C6C6);border:1px solid rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:center"><span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;color:rgba(0,0,0,0.35)">[ SLOT FOTO ]</span></div>
     </div>
     <div class="u-gal-cell u-gal-d" style="flex:none;width:190px;height:330px;margin-right:-95px;background:linear-gradient(160deg,#E6E6E6,#CACACA);border:1px solid rgba(0,0,0,0.07);display:flex;align-items:center;justify-content:center"><span style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;color:rgba(0,0,0,0.35)">[ SLOT FOTO ]</span></div>
+  </div>
   </div>
 </section>
 
@@ -673,6 +696,28 @@ body[data-menu-open="1"] [data-wafloat]{opacity:0 !important;pointer-events:none
     );
   };
 
+  // Count-up for the hero stat. The markup keeps the final value as static text (no {{ }}),
+  // so the runtime writes it once at mount and never rewrites it — which is what lets JS own
+  // the text content during the tween without a re-render stomping on it mid-count.
+  window.__uploInitCounters = function () {
+    document.querySelectorAll('.u-count').forEach(el => {
+      if (el.dataset.cntInit) return;
+      el.dataset.cntInit = '1';
+      const to = parseFloat(el.dataset.countTo || '0');
+      const suffix = el.dataset.countSuffix || '';
+      if (!window.gsap) { el.textContent = to + suffix; return; }
+      const n = { v: 0 };
+      el.textContent = '0' + suffix;
+      window.gsap.to(n, {
+        v: to, duration: 1.6, ease: 'power2.out',
+        // starts once the data-hr="5" entrance has begun, so the number is already in place
+        delay: 0.75,
+        onUpdate: () => { el.textContent = Math.round(n.v) + suffix; },
+        onComplete: () => { el.textContent = to + suffix; }
+      });
+    });
+  };
+
   // Mobile menu. State is a data-menu-open attribute on <body>, deliberately outside the
   // React tree so a re-render (lang toggle, hero autoplay) can never desync it. All visuals
   // are CSS-derived from that attribute; nothing here holds a reference to a rendered node.
@@ -771,6 +816,7 @@ class Component extends DCLogic {
       requestAnimationFrame(() => requestAnimationFrame(() => {
         window.__uploInitScrollFloat();
         window.__uploInitFormReveal();
+        window.__uploInitCounters();
       }));
     }
     // mobile menu — must work regardless of reduced-motion
@@ -934,7 +980,7 @@ class Component extends DCLogic {
       },
       mvStyle: narrow
         ? { width: '100%', height: '300px', maxWidth: '100%', background: 'transparent', filter: p.mvFilter, cursor: 'pointer', transform: 'none' }
-        : { width: '560px', height: '520px', maxWidth: '100%', background: 'transparent', filter: p.mvFilter, cursor: 'pointer', transform: 'translateX(48px)' },
+        : { width: '680px', height: '600px', maxWidth: '100%', background: 'transparent', filter: p.mvFilter, cursor: 'pointer', transform: 'translateX(48px)' },
       wrapStyle: (() => {
         const cur = this.state.heroIdx, prev = this.state.prevHero;
         const active = i === cur;
